@@ -24,7 +24,7 @@ local ScriptData = {
 
     Remotes = {
         Attack = nil,
-        GrabHandler = nil,
+        -- GrabHandler = nil, -- no longer supported due to AC detection, kept for future reference.
     },
 }
 
@@ -196,7 +196,7 @@ local function GetRemotes()
     local Tools = Events:FindFirstChild("Tools"); if not Tools then TellError("Could not get Tools."); return end
 
     ScriptData.Remotes.Attack = Tools:FindFirstChild("Attack"); if not ScriptData.Remotes.Attack then TellError("Could not get Attack"); return end
-    ScriptData.Remotes.GrabHandler = Events:FindFirstChild("GrabHandler"); if not ScriptData.Remotes.GrabHandler then TellError("Could not get GrabHandler"); return end
+    -- ScriptData.Remotes.GrabHandler = Events:FindFirstChild("GrabHandler"); if not ScriptData.Remotes.GrabHandler then TellError("Could not get GrabHandler"); return end
 
     return true
 end
