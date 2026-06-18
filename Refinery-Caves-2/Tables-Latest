@@ -1,0 +1,556 @@
+return {
+	OreData = {
+		["Obsidian"] = {
+			KnownArea = nil,
+			Tier = 4,
+			Type = nil,
+		},
+		["Sphalerite"] = {
+			KnownArea = nil,
+			Tier = 4,
+			Type = nil,
+		},
+		["Wildcore"] = {
+			KnownArea = nil,
+			Tier = 4,
+			Type = nil,
+		},
+		["Iron"] = {
+			KnownArea = nil,
+			Tier = 1,
+			Type = nil,
+		},
+		["Amber"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Ancient Rune"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Blastshard"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Emerald"] = {
+			KnownArea = nil,
+			Tier = 4,
+			Type = nil,
+		},
+		["Mud"] = {
+			KnownArea = nil,
+			Tier = 1,
+			Type = nil,
+		},
+		["Cloudnite"] = {
+			KnownArea = nil,
+			Tier = 4,
+			Type = nil,
+		},
+		["Coal"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Clay"] = {
+			KnownArea = nil,
+			Tier = 1,
+			Type = nil,
+		},
+		["Deepslate"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Copper"] = {
+			KnownArea = nil,
+			Tier = 1,
+			Type = nil,
+		},
+		["Diamond"] = {
+			KnownArea = nil,
+			Tier = 4,
+			Type = nil,
+		},
+		["Pink Diamond"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Snow"] = {
+			KnownArea = nil,
+			Tier = 1,
+			Type = nil,
+		},
+		["Gold"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Granite"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Mushroom"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Jade"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Marble"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Null"] = {
+			KnownArea = nil,
+			Tier = 0,
+			Type = nil,
+		},
+		["Ruby"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Salt"] = {
+			KnownArea = nil,
+			Tier = 1,
+			Type = nil,
+		},
+		["Sand"] = {
+			KnownArea = nil,
+			Tier = 1,
+			Type = nil,
+		},
+		["Pumpkin"] = {
+			KnownArea = nil,
+			Tier = 4,
+			Type = nil,
+		},
+		["Sapphire"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Scarlet"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Silver"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Tall Grass"] = {
+			KnownArea = nil,
+			Tier = 1,
+			Type = nil,
+		},
+		["Tin"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Topaz"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Voltshard"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Titanium"] = {
+			KnownArea = nil,
+			Tier = 1,
+			Type = nil,
+		},
+		["Quartz"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Soulstone"] = {
+			KnownArea = nil,
+			Tier = 1,
+			Type = nil,
+		},
+		["Hallow"] = {
+			KnownArea = nil,
+			Tier = 1,
+			Type = nil,
+		},
+		["Ice"] = {
+			KnownArea = nil,
+			Tier = 1,
+			Type = nil,
+		},
+		["Bauxite"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Cobalt"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["BlueFlower"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Dirt"] = {
+			KnownArea = nil,
+			Tier = 1,
+			Type = nil,
+		},
+		["Limestone"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Lithium"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Sulfur"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Noir"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Crimsone"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Gingerbread"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Magma"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Flower Grass"] = {
+			KnownArea = nil,
+			Tier = 1,
+			Type = nil,
+		},
+		["Abyssalite"] = {
+			KnownArea = nil,
+			Tier = 5,
+			Type = nil,
+		},
+		["Odd Stone"] = {
+			KnownArea = nil,
+			Tier = 4,
+			Type = nil,
+		},
+		["Meteorite"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Giftium"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Volcanium"] = {
+			KnownArea = nil,
+			Tier = 5,
+			Type = nil,
+		},
+		["Chocolate"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Tolmedit"] = {
+			KnownArea = nil,
+			Tier = 5,
+			Type = nil,
+		},
+		["Moonstone"] = {
+			KnownArea = nil,
+			Tier = 5,
+			Type = nil,
+		},
+		["Blazing Star"] = {
+			KnownArea = nil,
+			Tier = 5,
+			Type = nil,
+		},
+		["Fallen Star"] = {
+			KnownArea = nil,
+			Tier = 5,
+			Type = nil,
+		},
+		["Sunstone"] = {
+			KnownArea = nil,
+			Tier = 5,
+			Type = nil,
+		},
+		["Dumortierite"] = {
+			KnownArea = nil,
+			Tier = 5,
+			Type = nil,
+		},
+	},
+	TreeData = {
+		["Oak"] = {
+			KnownArea = nil,
+			Tier = 1,
+			Type = nil,
+		},
+		["Palm"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Vampiric Oak"] = {
+			KnownArea = nil,
+			Tier = 4,
+			Type = nil,
+		},
+		["Pine"] = {
+			KnownArea = nil,
+			Tier = 4,
+			Type = nil,
+		},
+		["Fir"] = {
+			KnownArea = nil,
+			Tier = 4,
+			Type = nil,
+		},
+		["Cherry"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Willow"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Maple"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Redwood"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Silverwood Tree"] = {
+			KnownArea = nil,
+			Tier = 4,
+			Type = nil,
+		},
+		["Lush Oak"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Goldwood Tree"] = {
+			KnownArea = nil,
+			Tier = 4,
+			Type = nil,
+		},
+		["Ancient Coldwood"] = {
+			KnownArea = nil,
+			Tier = 4,
+			Type = nil,
+		},
+		["Glacial"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Yellow Coral"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Swampine"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Green Coral"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Orewood"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Spook"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Kelp"] = {
+			KnownArea = nil,
+			Tier = 1,
+			Type = nil,
+		},
+		["Wicked"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Birch"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Acacia"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Scorched"] = {
+			KnownArea = nil,
+			Tier = 0,
+			Type = nil,
+		},
+		["Lumena"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Festive Tree 2"] = {
+			KnownArea = nil,
+			Tier = 999,
+			Type = nil,
+		},
+		["Festive Tree 3"] = {
+			KnownArea = nil,
+			Tier = 999,
+			Type = nil,
+		},
+		["Festive Tree 4"] = {
+			KnownArea = nil,
+			Tier = 999,
+			Type = nil,
+		},
+		["Festive Tree 1"] = {
+			KnownArea = nil,
+			Tier = 999,
+			Type = nil,
+		},
+		["Pink Coral"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Blue Coral"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["White Coral"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Red Coral"] = {
+			KnownArea = nil,
+			Tier = 2,
+			Type = nil,
+		},
+		["Greatwood"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Nightshade"] = {
+			KnownArea = nil,
+			Tier = 4,
+			Type = nil,
+		},
+		["Carroot"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Kanzan Tree"] = {
+			KnownArea = nil,
+			Tier = 5,
+			Type = nil,
+		},
+		["Sakura Tree"] = {
+			KnownArea = nil,
+			Tier = 5,
+			Type = nil,
+		},
+		["Kojo Tree"] = {
+			KnownArea = nil,
+			Tier = 5,
+			Type = nil,
+		},
+		["Atlas Tree"] = {
+			KnownArea = nil,
+			Tier = 5,
+			Type = nil,
+		},
+		["Magnolia Tree"] = {
+			KnownArea = nil,
+			Tier = 5,
+			Type = nil,
+		},
+		["Odd Tree"] = {
+			KnownArea = nil,
+			Tier = 4,
+			Type = nil,
+		},
+		["Candy Cane Tree"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Blazing Tree"] = {
+			KnownArea = nil,
+			Tier = 4,
+			Type = nil,
+		},
+		["Moondrop"] = {
+			KnownArea = nil,
+			Tier = 4,
+			Type = nil,
+		},
+		["Snowlaid"] = {
+			KnownArea = nil,
+			Tier = 3,
+			Type = nil,
+		},
+		["Frozen Barkwood"] = {
+			KnownArea = nil,
+			Tier = 1,
+			Type = nil,
+		},
+	}
+}
