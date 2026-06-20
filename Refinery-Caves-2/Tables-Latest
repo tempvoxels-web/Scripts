@@ -1,4 +1,54 @@
 return {
+	Areas = {
+		["Marble Valley"] = function()
+		    local Fixed = Vector3.new(-750, 85, -340)
+
+			local Offset = Vector3.new(
+            	math.random(-5, 5),
+            	math.random(-2, 2),
+            	math.random(-5, 5)
+        	)
+
+			return CFrame.new(Fixed + Offset)
+		end,
+
+		["Novabay"] = function()
+		    local Fixed = Vector3.new(910, 95, -660)
+
+			local Offset = Vector3.new(
+            	math.random(-5, 5),
+            	math.random(-2, 2),
+            	math.random(-5, 5)
+        	)
+
+			return CFrame.new(Fixed + Offset)
+		end,
+
+		["The Ocean"] = function()
+		    local Fixed = Vector3.new(1740, 10, -1340)
+
+			local Offset = Vector3.new(
+            	math.random(-5, 5),
+            	math.random(-2, 2),
+            	math.random(-5, 5)
+        	)
+
+			return CFrame.new(Fixed + Offset)
+		end,
+
+		["Dusty Passage"] = function()
+		    local Fixed = Vector3.new(675, -235, 200)
+
+			local Offset = Vector3.new(
+            	math.random(-5, 5),
+            	math.random(-2, 2),
+            	math.random(-5, 5)
+        	)
+
+			return CFrame.new(Fixed + Offset)
+		end,
+	}
+
 	OreData = {
 		["Obsidian"] = {
 			KnownArea = nil,
@@ -16,17 +66,22 @@ return {
 			Type = "Normal",
 		},
 		["Iron"] = {
-			KnownArea = nil,
+			KnownArea = "Novabay",
+			Tier = 1,
+			Type = "Normal",
+		},
+		["Stone"] = {
+			KnownArea = "Novabay",
 			Tier = 1,
 			Type = "Normal",
 		},
 		["Amber"] = {
-			KnownArea = nil,
+			KnownArea = "Dusty Passage",
 			Tier = 3,
 			Type = "Normal",
 		},
 		["Ancient Rune"] = {
-			KnownArea = nil,
+			KnownArea = "Dusty Passage",
 			Tier = 2,
 			Type = "Rune",
 		},
@@ -51,7 +106,7 @@ return {
 			Type = "Cold",
 		},
 		["Coal"] = {
-			KnownArea = nil,
+			KnownArea = "Dusty Passage",
 			Tier = 2,
 			Type = "Normal",
 		},
@@ -66,7 +121,7 @@ return {
 			Type = "Normal",
 		},
 		["Copper"] = {
-			KnownArea = nil,
+			KnownArea = "Novabay",
 			Tier = 1,
 			Type = "Normal",
 		},
@@ -91,7 +146,7 @@ return {
 			Type = "Normal",
 		},
 		["Granite"] = {
-			KnownArea = nil,
+			KnownArea = "Marble Valley",
 			Tier = 2,
 			Type = "Normal",
 		},
@@ -106,7 +161,7 @@ return {
 			Type = "Normal",
 		},
 		["Marble"] = {
-			KnownArea = nil,
+			KnownArea = "Marble Valley",
 			Tier = 2,
 			Type = "Normal",
 		},
@@ -126,7 +181,7 @@ return {
 			Type = "Normal",
 		},
 		["Sand"] = {
-			KnownArea = nil,
+			KnownArea = "The Ocean",
 			Tier = 1,
 			Type = "Normal",
 		},
@@ -176,7 +231,7 @@ return {
 			Type = "Normal",
 		},
 		["Quartz"] = {
-			KnownArea = nil,
+			KnownArea = "Dusty Passage",
 			Tier = 2,
 			Type = "Normal",
 		},
@@ -216,7 +271,7 @@ return {
 			Type = "Normal",
 		},
 		["Limestone"] = {
-			KnownArea = nil,
+			KnownArea = "The Ocean",
 			Tier = 2,
 			Type = "Normal",
 		},
