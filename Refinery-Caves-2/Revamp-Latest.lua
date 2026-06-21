@@ -2,14 +2,16 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 
 local ScriptData = {
     Version = "REVAMP",
-    LastUpdated = "6/18/26",
-    CompatibleGameBuild = "14194",
+    LastUpdated = "6/20/26",
+    CompatibleGameBuild = "14197",
     CurrentGameBuild = nil,
 
     Plot = nil,
 
     SetLocation = nil,
     IsAutoFarming = false,
+
+    SelectedCollectableForAutoFarm = nil,
 
     Toggles = {
         EnableKeybinds = false,
@@ -28,12 +30,11 @@ local ScriptData = {
     },
 }
 
+local Tables = loadstring(game:HttpGet('https://raw.githubusercontent.com/tempvoxels-web/Scripts/refs/heads/main/Refinery-Caves-2/Tables-Latest'))()
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
-if not Rayfield then
-    warn("Failed to load Rayfield.")
-    return
-end
+if not Tables then warn("Failed to load Tables."); return end
+if not Rayfield then warn("Failed to load Rayfield."); return end
 
 local Window = Rayfield:CreateWindow({
     Name = "Refinery Caves 2 | Voxels.RBX",
@@ -110,9 +111,13 @@ local function NotifyInformation(Content, Duration, Urgent)
     end
 end
 
+local HasExited = false
+
 local function NotifyExit(Content, Duration)
     if not Content or typeof(Content) ~= "string" then Content = "Please input content of exit or make it a string." end
     if not Duration or typeof(Duration) ~= "number" then Duration = 5 end
+
+    HasExited = true
 
     if Duration ~= 0 then
         Rayfield:Notify({
@@ -180,7 +185,7 @@ repeat
 until ScriptData.Plot ~= nil
 
 local SuccessIdle, ErrIdle = pcall(function()
-    if not getconnections then return error("Your executor is dogwater and doesn't have getconnections 💀💀") end
+    if not getconnections then return error("Your executor does not support getconnections, please get a better one.") end
 
     for _, Idle in pairs(getconnections(LocalPlayer.Idled)) do
         Idle:Disable()
@@ -188,7 +193,7 @@ local SuccessIdle, ErrIdle = pcall(function()
 end)
 
 if not SuccessIdle then
-    warn("Anti-Idle failed. | Error: " .. tostring(ErrIdle))
+    warn("Anti-Idle failed.\n\n" .. tostring(ErrIdle))
 end
 
 local function GetRemotes()
@@ -201,26 +206,48 @@ local function GetRemotes()
     return true
 end
 
+if not newcclosure or not hookmetamethod then
+    NotifyExit("Incompatible executor detected.", 7.5); TellError("Script closed because the users executor does not support newcclosure, please get a better one.")
+    return 
+end 
+
+local OldHook
+
 local CheckRem = GetRemotes()
 
 if not CheckRem then
+    if OldHook then
+        hookmetamethod(game, "__namecall", OldHook)
+    end
+
     NotifyExit("Could not get all the remotes, unloading script..", 5)
 end
 
-if not newcclosure then warn("Executor absolute hot steaming garbage, get a better one."); return end 
-
-local OldHook
 OldHook = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
-    if not ScriptData.IsAutoFarming and self == ScriptData.Remotes.Attack and getnamecallmethod() == "FireServer" then
-        local Arg = ...
+    if not ScriptData.Remotes.Attack then TellError("Attack remote suddenly dissapeared or failed to get caught."); hookmetamethod(game, "__namecall", OldHook); NotifyExit("Exiting the script because an error occured."); return end
 
-        if Arg and Arg.Alpha then
-            if ScriptData.Toggles.PerfectHit65 then
-                Arg.Alpha = math.random(6451, 6500) / 10000
-            elseif ScriptData.Toggles.PerfectHit then
-                Arg.Alpha = math.random(9951, 9999) / 10000
+    if not ScriptData.Toggles.PerfectHit and not ScriptData.Toggles.PerfectHit65 then
+        return OldHook and OldHook(self, ...)
+    end
+
+    local Args = {...}
+
+    local Success, Err = pcall(function()
+        if not ScriptData.IsAutoFarming and self == ScriptData.Remotes.Attack and getnamecallmethod() == "FireServer" then
+            local Arg = Args[1]
+
+            if Arg and Arg.Alpha then
+                if ScriptData.Toggles.PerfectHit65 then
+                    Arg.Alpha = math.random(6451, 6500) / 10000
+                elseif ScriptData.Toggles.PerfectHit then
+                    Arg.Alpha = math.random(9951, 9999) / 10000
+                end
             end
         end
+    end)
+
+    if not Success then
+        TellError("Sudden hook failure on Attack.\n\n" .. tostring(Err))
     end
 
     return OldHook(self, ...)
@@ -285,7 +312,6 @@ local function AskItemTeleport(Type)
 
         for _,Part in ipairs(Parts) do
             local Model = Part:FindFirstAncestorWhichIsA("Model")
-            local Pivot = Model:GetPivot().Position
 
             if Model and Model.Parent.Name == "Grab" then
                 for _, Grab in ipairs(Model:GetDescendants()) do
@@ -300,6 +326,9 @@ local function AskItemTeleport(Type)
         end
 
         return
+
+    elseif ScriptData.IsAutoFarming then
+        NotifyInformation("You can not use the held item teleport when auto farming.", 7.5)
     end
 
     if not ScriptData.IsAutoFarming and Type == "Aura" then
@@ -326,21 +355,31 @@ local function AskItemTeleport(Type)
                 Model.ModelStreamingMode = Enum.ModelStreamingMode.Persistent
 
                 local Part = Model:FindFirstChildWhichIsA("Part"); if not Part then TellError("Could not get part from model.  [Aura]"); return end
-                local Pivot = Model:GetPivot().Position
 
-                Model:PivotTo(ScriptData.SetLocation)
-                ApplyRandomVelocity(Model)
+                for i = 1, 4 do 
+                    Model:PivotTo(ScriptData.SetLocation)
+                    ApplyRandomVelocity(Model)
+                end
             end)
         end
 
         return
+
+    elseif ScriptData.IsAutoFarming then
+        NotifyInformation("You can not use the item teleport aura when auto farming.", 7.5)
     end
 
-    if Type ~= "Auto" and Type ~= "Held" and Type ~= "Aura" then TellError("Incorrect Type was parsed.  [AskItemTeleport]") return end
+    if Type ~= "Auto" and Type ~= "Held" and Type ~= "Aura" then TellError("Incorrect Type was parsed.  [AskItemTeleport]"); return end
 end
 
+-- -- -- -- -- -- -- -- -- --
 
--- -- -- -- -- -- -- -- -- -- 
+Rayfield:Notify({
+    Title = "Welcome!",
+    Content = "Thank you for using VOXELS.RBX.",
+    Image = "heart",
+    Duration = 7.5,
+})
 
 local MainTab = Window:CreateTab("Main")
 
@@ -373,16 +412,18 @@ MainTab:CreateButton({
         local Character = LocalPlayer.Character; if not Character then return end
         local HumanoidRootPart = Character:FindFirstChild("HumanoidRootPart"); if not HumanoidRootPart then return end
 
-        ScriptData.SetLocation = HumanoidRootPart.CFrame
+        if not ScriptData.IsAutoFarming then
+            ScriptData.SetLocation = HumanoidRootPart.CFrame
+        end
 
         Rayfield:Notify({
             Title = "Set Location",
-            Content = "New location has been set.",
-            Image = "cog",
-            Duration = 2.5,
+            Content = ScriptData.IsAutoFarming and "You are unable to set a new location when auto farming." or "New location has been set.",
+            Image = ScriptData.IsAutoFarming and "info" or "cog",
+            Duration = ScriptData.IsAutoFarming and 5 or 2.5,
         })
 
-        if SavedPrevious or HasTeleported then 
+        if not ScriptData.IsAutoFarming and SavedPrevious or HasTeleported then 
             SavedPrevious = nil
             HasTeleported = false
         end
@@ -497,19 +538,360 @@ MainTab:CreateDivider()
 
 -- -- -- -- -- -- -- -- -- --
 
-local SettingsTab = Window:CreateTab("Settings")
+local AutoFarmTab = Window:CreateTab("Auto-Farm")
 
-SettingsTab:CreateSection("Info")
+AutoFarmTab:CreateSection("Auto-Farm")
 
-SettingsTab:CreateParagraph({Title = "Version: \n", Content = 
+local function GetOptions(Type)
+    if not Type or typeof(Type) ~= "string" then TellError("Type is not a string or Type was not parsed."); return end
+
+    local ReturnTable = {}
+
+    if Tables.OreData and Type == "Ore" then
+        for OreName, _ in pairs(Tables.OreData) do
+            table.insert(ReturnTable, OreName)
+        end
+
+        table.sort(ReturnTable)
+        table.insert(ReturnTable, 1, "None")
+    end
+
+    if Tables.TreeData and Type == "Tree" then
+        for TreeName, _ in pairs(Tables.TreeData) do
+            table.insert(ReturnTable, TreeName)
+        end
+
+        table.sort(ReturnTable)
+        table.insert(ReturnTable, 1, "Placeholder")
+    end
+
+    if Type ~= "Ore" and Type ~= "Tree" then TellError("Incorrect Type was parsed.  [GetOptions]"); return end
+
+    return ReturnTable
+end
+
+local OreOptions = GetOptions("Ore")
+local TreeOptions = GetOptions("Tree")
+
+local OreDropdown = nil
+local TreeDropdown = nil
+
+local UpdatingDropdown = false
+
+OreDropdown = AutoFarmTab:CreateDropdown({
+    Name = "Selected Ore",
+    Options = OreOptions,
+    CurrentOption = "None",
+    MultipleOptions = false,
+    Flag = "SelectedOre",
+    Callback = function(o)
+        if UpdatingDropdown then return end
+
+        UpdatingDropdown = true
+        TreeDropdown:Set({"Placeholder"})
+        task.wait()
+        UpdatingDropdown = false
+
+        ScriptData.SelectedCollectableForAutoFarm = o[1]
+
+        Rayfield:Notify({
+            Title = "Selected Ore",
+            Content = "Selected: " .. ScriptData.SelectedCollectableForAutoFarm,
+            Image = "cog",
+            Duration = 4,
+        })
+    end,
+})
+
+TreeDropdown = AutoFarmTab:CreateDropdown({
+    Name = "Selected Tree",
+    Options = TreeOptions,
+    CurrentOption = "Placeholder",
+    MultipleOptions = false,
+    Flag = "TreeOre",
+    Callback = function(o)
+        if UpdatingDropdown then return end
+
+        UpdatingDropdown = true
+        OreDropdown:Set({"None"})
+        task.wait()
+        UpdatingDropdown = false
+
+        ScriptData.SelectedCollectableForAutoFarm = o[1]
+
+        Rayfield:Notify({
+            Title = "Selected Tree",
+            Content = "Selected: " .. ScriptData.SelectedCollectableForAutoFarm,
+            Image = "cog",
+            Duration = 4,
+        })
+    end,
+})
+
+
+
+-- -- -- -- -- -- -- -- -- --
+
+local TeleportsTab = Window:CreateTab("Teleports")
+
+local function TeleportToRequest(CFrame, LocationName)
+    if not CFrame or typeof(CFrame) ~= "CFrame" then warn("CFrame was not parsed or CFrame is not a CFrame."); return end
+    if not LocationName or typeof(LocationName) ~= "string" then warn("LocationName was not parsed or LocationName is not a string."); return end
+
+    local Character = LocalPlayer.Character; if not Character then return end
+    local HumanoidRootPart = Character:FindFirstChild("HumanoidRootPart"); if not HumanoidRootPart then return end
+
+    HumanoidRootPart.CFrame = CFrame
+
+    Rayfield:Notify({
+        Title = "Teleported",
+        Content = "Teleported to " .. LocationName,
+        Image = "move-3d",
+        Duration = 4,
+    })
+end
+
+TeleportsTab:CreateSection("Plot")
+
+TeleportsTab:CreateButton({
+    Name = "Plot",
+    Callback = function()
+        TeleportToRequest(ScriptData.Plot.CFrame + Vector3.new(0,25,0), "your Plot")
+    end
+})
+
+TeleportsTab:CreateSection("Shops")
+
+TeleportsTab:CreateButton({
+    Name = "Novabay Utility",
+    Callback = function()
+        TeleportToRequest(CFrame.new(1261, 44, -688), "Novabay Utility")
+    end
+})
+
+TeleportsTab:CreateButton({
+    Name = "Build'n Crate",
+    Callback = function()
+        TeleportToRequest(CFrame.new(1077, 45, -837), "Build'n Crate")
+    end
+})
+
+TeleportsTab:CreateButton({
+    Name = "Craig's Dealership",
+    Callback = function()
+        TeleportToRequest(CFrame.new(716, 48, -565), "Craig's Dealership")
+    end
+})
+
+TeleportsTab:CreateButton({
+    Name = "Nautic Finds",
+    Callback = function()
+        TeleportToRequest(CFrame.new(1802, 23, -1382), "Nautic Finds")
+    end
+})
+
+TeleportsTab:CreateButton({
+    Name = "Coal's Furniture",
+    Callback = function()
+        TeleportToRequest(CFrame.new(1193, 128, 540), "Coal's Furniture")
+    end
+})
+
+TeleportsTab:CreateButton({
+    Name = "Lush Cave Shop",
+    Callback = function()
+        TeleportToRequest(CFrame.new(-592, -514, 990), "Lush Cave Shop")
+    end
+})
+
+TeleportsTab:CreateButton({
+    Name = "Shack",
+    Callback = function()
+        TeleportToRequest(CFrame.new(1053, 281, 3925), "Shack")
+    end
+})
+
+TeleportsTab:CreateButton({
+    Name = "Dell's Shipyard",
+    Callback = function()
+        TeleportToRequest(CFrame.new(-179, 17, 3378), "Dell's Shipyard")
+    end
+})
+
+TeleportsTab:CreateButton({
+    Name = "Vi's Logics",
+    Callback = function()
+        TeleportToRequest(CFrame.new(-5149, 70, -2821), "Vi's Logics")
+    end
+})
+
+TeleportsTab:CreateSection("Sellary's")
+
+TeleportsTab:CreateButton({
+    Name = "Nova Sellary",
+    Callback = function()
+        TeleportToRequest(CFrame.new(943, 46, -731), "Nova Sellary")
+    end
+})
+
+TeleportsTab:CreateButton({
+    Name = "Nautic Sellary",
+    Callback = function()
+        TeleportToRequest(CFrame.new(1571, 16, -1292), "Nautic Sellary")
+    end
+})
+
+TeleportsTab:CreateDivider()
+
+-- -- -- -- -- -- -- -- -- --
+
+local MiscTab = Window:CreateTab("Misc")
+
+-- -- -- -- -- -- -- -- -- --
+
+local InformationTab = Window:CreateTab("Information")
+
+InformationTab:CreateSection("Info")
+
+local VersionInfo = InformationTab:CreateParagraph({Title = "Version: \n", Content = "Empty, SetVersion function might have broke or is bugged."})
+
+local function SetVersion()
+    if not ScriptData.Version or not ScriptData.LastUpdated or not ScriptData.CompatibleGameBuild or not ScriptData.CurrentGameBuild then TellError("Data error occured in SetVersion function."); NotifyInformation("Unable to get correct versions, script may be broken/patched", 7.5, true); return end
+
+    VersionInfo:Set({Title = "Version: \n", Content = 
 ("Script Version: " .. ScriptData.Version .. 
 "\n" .. "Last Updated: " .. ScriptData.LastUpdated .. "  (MM/DD/YY)" .. 
 "\n" .. "Compatible Game Build: " .. ScriptData.CompatibleGameBuild .. 
 "\n" .. "Current Game Build: ".. tostring(ScriptData.CurrentGameBuild))})
+end
 
-SettingsTab:CreateSection("Misc")
+SetVersion()
 
-SettingsTab:CreateButton({
+InformationTab:CreateSection("Debug")
+
+local function DataRequestClipboard(Type)
+    if not Type or typeof(Type) ~= "string" then TellError("Type is not a string or Type was not parsed."); return end
+    if not setclipboard then return end
+
+    local ContentFolder = ReplicatedStorage:FindFirstChild("Content"); if not ContentFolder then TellError("Could not get ContentFolder.  [DataRequestClipboard]"); return end
+    local TableOutput = "local ".. Type .." = {\n"
+
+    if Type == "OreData" then
+        local OresFolder = ContentFolder:FindFirstChild("Ores"); if not OresFolder then TellError("Could not get OresFolder.  [DataRequestClipboard]"); return end
+
+        for _, Ore in ipairs(OresFolder:GetChildren()) do
+	        if Ore.ClassName == "Model" then
+                local FoundTier = nil
+
+                for _, Tier in ipairs(Ore:GetDescendants()) do
+                    if Tier.Name == "Tier" and Tier.ClassName == "NumberValue" then
+                        FoundTier = Tier.Value
+                    end
+                end
+
+		        TableOutput ..= string.format(
+			        '\t["%s"] = {\n\t\tKnownArea = nil,\n\t\tTier = %s,\n\t\tType = nil,\n\t},\n',
+			        Ore.Name,
+                    tostring(FoundTier)
+		        )
+	        end
+        end
+    end
+    
+    if Type == "TreeData" then
+        local TreesFolder = ContentFolder:FindFirstChild("Trees"); if not TreesFolder then TellError("Could not get TreesFolder.  [DataRequestClipboard]"); return end
+
+        for _, Tree in ipairs(TreesFolder:GetChildren()) do
+	        if Tree.ClassName == "ModuleScript" then
+                local FoundTier = nil
+
+                for _, Tier in ipairs(Tree:GetDescendants()) do
+                    if Tier.Name == "Tier" and Tier.ClassName == "NumberValue" then
+                        FoundTier = Tier.Value
+                    end
+                end
+
+		        TableOutput ..= string.format(
+			        '\t["%s"] = {\n\t\tKnownArea = nil,\n\t\tTier = %s,\n\t\tType = nil,\n\t},\n',
+			        Tree.Name,
+                    tostring(FoundTier)
+		        )
+	        end
+        end
+    end
+
+    if Type ~= "OreData" and Type ~= "TreeData" then TellError("Incorrect Type was parsed.  [DataRequestClipboard]"); return end
+
+    TableOutput ..= "}"
+    setclipboard(TableOutput)
+
+    return true
+end
+
+local SelectedTableType = "OreData"
+
+InformationTab:CreateDropdown({
+    Name = "Selected Table",
+    Options = {"OreData", "TreeData"},
+    CurrentOption = {"OreData"},
+    MultipleOptions = false,
+    Flag = "SelectedTable",
+    Callback = function(o)
+        SelectedTableType = o[1]
+    end,
+})
+
+InformationTab:CreateButton({
+    Name = "Copy Selected Table to Clipboard",
+    Callback = function()
+        local ClipboardRequestReturn = DataRequestClipboard(SelectedTableType)
+
+        Rayfield:Notify({
+            Title = ClipboardRequestReturn and "Successfully copied" or "Could not copy.",
+            Content = ClipboardRequestReturn and "Press Ctrl+V to paste somewhere else." or "If you think this is an error that shouldn't occur, please contact VOXELS.RBX.",
+            Image = ClipboardRequestReturn and "check" or "frown",
+            Duration = 4,
+        })
+    end,
+})
+
+local LastBuildCheck = 0
+local CooldownDuration = 5
+
+InformationTab:CreateButton({
+    Name = "Attempt Build Recheck",
+    Callback = function()
+        local CurrentTime = tick()
+
+        if CurrentTime - LastBuildCheck >= CooldownDuration then
+            LastBuildCheck = CurrentTime
+
+            ScriptData.CurrentGameBuild = CheckGameBuild()
+
+            SetVersion()
+
+            Rayfield:Notify({
+                Title = "Build Recheck",
+                Content = "The build has been rechecked, if it shows a 0 this might be a game fault, if it shows UNKNOWN please contact VOXELS.RBX.",
+                Image = "check",
+                Duration = 15,
+            })
+        else
+            local TimeLeft = math.ceil(CooldownDuration - (CurrentTime - LastBuildCheck))
+
+            Rayfield:Notify({
+                Title = "Cooldown",
+                Content = "Please wait. (" .. TimeLeft .. "s)",
+                Image = "loader",
+                Duration = 3,
+            })
+        end
+    end,
+})
+
+InformationTab:CreateSection("Extra")
+
+InformationTab:CreateButton({
     Name = "Destroy UI",
     Callback = function()
         hookmetamethod(game, "__namecall", OldHook)
@@ -522,4 +904,19 @@ if ScriptData.CurrentGameBuild ~= "Unknown" and ScriptData.CompatibleGameBuild ~
     NotifyInformation("Incompatible game version detected! script may be broken/detected.", 7.5, true)
 end
 
-SettingsTab:CreateDivider()
+InformationTab:CreateDivider()
+
+task.spawn(function()
+    while not HasExited do task.wait(2.5)
+        local LoopCheckRem = GetRemotes()
+
+        if not LoopCheckRem and not HasExited then
+            TellError("A remote suddenly dissapeared or got moved.  [LoopCheckRem]")
+            hookmetamethod(game, "__namecall", OldHook)
+            NotifyExit("Exiting the script because a critical error occured.", 5)
+            break
+        elseif HasExited then
+            break
+        end
+    end
+end)
